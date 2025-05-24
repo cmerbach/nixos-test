@@ -1,6 +1,8 @@
 # NixOS
 
+
 ## Quick and dirty setup guide for testing
+
 
 ### Download and run a vm
 
@@ -45,15 +47,20 @@ ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password nixos@127.0
 
 ## Arduino
 
+<a href="arduino/pic/arduino.png"><img src="arduino/pic/arduino.png" height="250" alt="Arduino Pro Micro (ATmega32U4)"></a>
+
+<br>
+
 > [!TIP]
 > [Arduino Pro Micro (ATmega32U4)](https://www.amazon.de/EntwicklungBoards-Binghe-Mikrocontroller-Entwicklungsboard-Selbst-USB-Updater/dp/B0D69JLJ97) <br>
 > [USB C Adapter](https://www.amazon.de/dp/B0BYK917NM)
 
+
 ---
 ### Circuit diagram
 
-<a href="arduino/pic/.png"><img src="arduino/pic/circuit-diagram-basis.png" height="200" alt="circuit-diagram-basis"></a>
-<a href="arduino/pic/.png"><img src="arduino/pic/circuit-diagram-touch-modul.png" height="200" alt="circuit-diagram-touch-modul"></a>
+<a href="arduino/pic/circuit-diagram-basis.png"><img src="arduino/pic/circuit-diagram-basis.png" height="200" alt="circuit-diagram-basis"></a>
+<a href="arduino/pic/circuit-diagram-touch-modul.png"><img src="arduino/pic/circuit-diagram-touch-modul.png" height="200" alt="circuit-diagram-touch-modul"></a>
 
 ---
 ### PCB Design
@@ -68,8 +75,10 @@ ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password nixos@127.0
 ---
 ### Case
 
-<a href="arduino/pic/case-print.png"><img src="arduino/pic/case-print.png" height="200" alt="Print Model for BambuLab A1"></a>
 <a href="arduino/3mf/arduino_case.scad"><img src="arduino/pic/case-view.png" height="200" alt="3D View of OpenSacd"></a>
+<a href="arduino/pic/case-print.png"><img src="arduino/pic/case-print.png" height="200" alt="Print Model for BambuLab A1"></a>
+<a href="arduino/pic/case-print-top.png"><img src="arduino/pic/case-print-top.png" height="200" alt="Print Model GeSliced with Supports Top View"></a>
+<a href="arduino/pic/case-print-bottom.png"><img src="arduino/pic/case-print-bottom.png" height="200" alt="Print Model GeSliced with Supports Bottom View"></a>
 
 ---
 ### Final Product
@@ -77,5 +86,8 @@ ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password nixos@127.0
 <a href="arduino/pic/final.png"><img src="arduino/pic/final.png" height="200" alt="Final Product"></a>
 <a href="arduino/pic/final-parts.png"><img src="arduino/pic/final-parts.png" height="200" alt="Parts"></a>
 <a href="arduino/pic/pcb-final.png"><img src="arduino/pic/pcb-final.png" height="200" alt="Touch Sensor"></a>
+
+
+<!-- ## Additional - -->
 
 <!-- Hier könnte Ihre Werbung stehen -->
