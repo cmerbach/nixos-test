@@ -87,6 +87,66 @@ ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password nixos@127.0
 <a href="arduino/pic/final-parts.png"><img src="arduino/pic/final-parts.png" height="200" alt="Parts"></a>
 <a href="arduino/pic/pcb-final.png"><img src="arduino/pic/pcb-final.png" height="200" alt="Touch Sensor"></a>
 
+---
+### Code
+
+```sh
+# open the arduino ide
+arduino-ide
+```
+
+> [!IMPORTANT]  
+> - Board Manager -> Arduino AVR Boards -> Install <br>
+> - Libary Manager -> Keybaord -> Install <br>
+> - Tools -> Board -> Arduino AVR Boards -> Arduino Leonardo <br>
+> - Tools -> Port -> /dev/ttyACM0
+
+<br>
+
+A simple script for the USB HID (Human Interface Device) functionality of the Arduino Pro Micro. This code sends a text message whenever the board is connected to a computer.
+
+
+---
+#### Simple example
+
+```cpp
+#include <Keyboard.h>
+
+void setup() {
+  Keyboard.begin(); // init keyboard
+  delay(1000); // wait 2 secounds for the system to be ready
+  Keyboard.print(""); // send Text without linebreak
+  Keyboard.write(KEY_RETURN); // simulate the Enter key
+  Keyboard.end(); // end keyboard
+}
+
+void loop() {
+  // nothing in the loop, since we only want to send once at startup
+}
+```
+
+<br>
+
+---
+#### Code for Production
+
+> [!CAUTION]
+> Think about the keyboard layout! It only works with **us** layout <br>
+> Also think about that you are using the us layout when typing! <br>
+
+> [!TIP]
+> workaround in my case for GNOME/KDE: <br>
+> ```gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'us')]"``` <br>
+> ```gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'de')]"``` <br>
+
+Upload the [Code](arduino/ino/touch.ino) to the Arduino Pro Micro. Don't forget to update the token for your GitHub account accordingly.
+
+> [!NOTE]  
+> ```const char* TOKEN = "...";```<br>
+> create a GitHub Token, go to: <br>
+> Settings -> Developer Settings -> Personal access tokens -> Fine-grained tokens -> REPO -> Repository permissions -> Contents -> read-only -> Generate Token
+
+
 
 <!-- ## Additional - -->
 
