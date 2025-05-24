@@ -71,5 +71,11 @@ ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password nixos@127.0
 <a href="arduino/pic/case-print.png"><img src="arduino/pic/case-print.png" height="200" alt="Print Model for BambuLab A1"></a>
 <a href="arduino/3mf/arduino_case.scad"><img src="arduino/pic/case-view.png" height="200" alt="3D View of OpenSacd"></a>
 
+---
+### Final Product
+
+<a href="arduino/pic/final.png"><img src="arduino/pic/final.png" height="200" alt="Final Product"></a>
+<a href="arduino/pic/final-parts.png"><img src="arduino/pic/final-parts.png" height="200" alt="Parts"></a>
+<a href="arduino/pic/pcb-final.png"><img src="arduino/pic/pcb-final.png" height="200" alt="Touch Sensor"></a>
 
 <!-- Hier könnte Ihre Werbung stehen -->
