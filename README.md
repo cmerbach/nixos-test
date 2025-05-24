@@ -65,5 +65,11 @@ ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password nixos@127.0
 > [!NOTE]  
 > You can go to [JLCPCB](https://jlcpcb.com) and upload the [files](arduino/pcb/touch-shield/production/) and be production ready
 
+---
+### Case
+
+<a href="arduino/pic/case-print.png"><img src="arduino/pic/case-print.png" height="200" alt="Print Model for BambuLab A1"></a>
+<a href="arduino/3mf/arduino_case.scad"><img src="arduino/pic/case-view.png" height="200" alt="3D View of OpenSacd"></a>
+
 
 <!-- Hier könnte Ihre Werbung stehen -->
