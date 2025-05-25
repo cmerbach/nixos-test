@@ -6,6 +6,8 @@
     # enable unfree software
     nixpkgs.config.allowUnfree = true;
 
+boot.loader.grub.device = "nodev";
+
     # network settings
     networking.networkmanager.enable = true;
     services.openssh.enable = true;

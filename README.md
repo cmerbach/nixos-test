@@ -96,9 +96,32 @@ nix --experimental-features \"nix-command flakes\" run --no-write-lock-file git+
 
 ### Reboot and start the system
 
+
+#### BIOS
 ```sh
-qemu-system-x86_64 -enable-kvm -hda tmp/nixos.img -smp 8 -m 16G -nic user,hostfwd=tcp::8888-:22
+# run in ui remove: -nographic -serial mon:stdio
+qemu-system-x86_64 -enable-kvm -hda tmp/nixos.img -smp 8 -m 16G -nic user,hostfwd=tcp::8888-:22 -nographic -serial mon:stdio
 ```
+
+#### UEFI
+```sh
+# run in ui remove: -nographic -serial mon:stdio
+cp "$(ls /nix/store/*qemu*/share/qemu/edk2-i386-vars.fd | head -1)" /tmp/efi-vars.fd && \
+chmod 777 /tmp/efi-vars.fd && \
+qemu-system-x86_64 \
+  -enable-kvm \
+  -machine q35 \
+  -cpu host \
+  -smp 8 \
+  -m 16G \
+  -drive if=pflash,format=raw,readonly=on,file="$(ls /nix/store/*qemu*/share/qemu/edk2-x86_64-code.fd | head -1)" \
+  -drive if=pflash,format=raw,file=/tmp/efi-vars.fd \
+  -drive file=tmp/nixos.img,format=raw \
+  -nic user,hostfwd=tcp::8888-:22 \
+  -nographic -serial mon:stdio
+```
+
+
 
 ## Arduino
 

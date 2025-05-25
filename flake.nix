@@ -43,7 +43,7 @@
                 ./hosts/${hostname}/hardware-configuration.nix # created on the fly if necessary
                 ./modules/disko.nix
 
-                ./modules/boot.nix
+                # ./modules/boot.nix
                 ./modules/server.nix
                 
             ];
@@ -54,6 +54,7 @@
             name = "install-local";
             runtimeInputs = with pkgs; [ cowsay git pick ];
             text = ''
+
                     REPO=nixos-test
 
                 # ---( downlaod repo )--- #
@@ -85,7 +86,7 @@
                     sudo nixos-install --no-root-passwd --impure --flake .#"$HOSTNAME"
                     git remote -v | head -n1 | sed 's/https:\/\/github.com\//git@github.com:/' | awk '{print $2}' | xargs -I {} git remote set-url origin {}
                     git remote -v
-                    cd .. && mv $REPO/ /mnt/home/user/
+                    cd .. && sudo mv $REPO/ /mnt/home/user/
             '';
         };
     };
