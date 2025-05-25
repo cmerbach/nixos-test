@@ -1,8 +1,6 @@
 # NixOS
 
-
 ## Quick and dirty setup guide for testing
-
 
 ### Download and run a vm
 
@@ -14,10 +12,15 @@ mkdir -p tmp
 test ! -f tmp/nixos.iso && wget https://channels.nixos.org/nixos-24.11/latest-nixos-minimal-x86_64-linux.iso -O tmp/nixos.iso || echo "Nothing todo!"
 
 # create the device for install the os
-test ! -f tmp/nixos.img && qemu-img create -f raw tmp/nixos.img 70G || echo "Nothing todo!"
+test ! -f tmp/nixos.img && qemu-img create -f raw tmp/nixos.img 100G || echo "Nothing todo!"
 ```
 
 ### Run the vm
+
+> [!NOTE]
+> **cpu <CPU> :** Specify a processor architecture to emulate. To see a list of supported architectures, run: `qemu-system-x86_64 -cpu` <br>
+> **cpu host :** (Recommended) Emulate the host processor <br>
+> **smp <NUMBER> :** Specify the number of cores the guest is permitted to use. The number can be higher than the available cores on the host system. Use `-smp $(nproc)` to use all currently available cores
 
 ```sh
 # ---( Option A)--- #
@@ -38,12 +41,64 @@ qemu-system-x86_64 -enable-kvm -hda tmp/nixos.img -smp 8 -m 16G -nic user,hostfw
 ```
 
 ### Login to vm
+
 ```sh
 ssh-keygen -f "/home/user/.ssh/known_hosts" -R "[127.0.0.1]:8888" && \
-sshpass -p '12345' \
+sshpass -p '123' \
 ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password nixos@127.0.0.1 -p 8888
 ```
 
+### Run install
+
+> [!IMPORTANT]  
+> The default repo you are using is: **nixos**
+
+> [!CAUTION]
+> To run disko need **2GB** of additional space
+
+#### install by hand
+
+```sh
+# set env variables
+export ACCOUNT=
+export BRANCH=
+# run the install 
+nix --experimental-features "nix-command flakes" run --no-write-lock-file git+https://github.com/$ACCOUNT/nixos?ref="$BRANCH"#install
+```
+
+#### install by copy and paste
+
+```sh
+# set env variables
+read -p 'Account: ' ACCOUNT && export ACCOUNT && \
+read -p 'BRANCH: ' BRANCH && export BRANCH && \
+read -p 'PASSWORD: ' PASSWORD && export PASSWORD && \
+# run the install 
+ACCOUNT="$ACCOUNT" PASSWORD="$PASSWORD" nix --experimental-features "nix-command flakes" run --no-write-lock-file git+https://"$ACCOUNT":"$PASSWORD"@github.com/$ACCOUNT/nixos?ref="$BRANCH"#install
+```
+
+#### install by runme 
+
+```sh
+# load env variable
+source .env.local
+# run the install
+ssh-keygen -f "/home/user/.ssh/known_hosts" -R "[127.0.0.1]:8888" && \
+sshpass -p '123' \
+ssh -t -o StrictHostKeyChecking=no -o PreferredAuthentications=password nixos@127.0.0.1 -p 8888 \
+" export REPO='$REPO' && \
+export ACCOUNT='$ACCOUNT' && \
+export BRANCH='$BRANCH' && \
+export PASSWORD='$PASSWORD' && \
+ACCOUNT=\"\$ACCOUNT\" PASSWORD=\"\$PASSWORD\" \
+nix --experimental-features \"nix-command flakes\" run --no-write-lock-file git+https://\"\$ACCOUNT\":\"\$PASSWORD\"@github.com/\$ACCOUNT/\$REPO?ref=\"\$BRANCH\"#install"
+```
+
+### Reboot and start the system
+
+```sh
+qemu-system-x86_64 -enable-kvm -hda tmp/nixos.img -smp 8 -m 16G -nic user,hostfwd=tcp::8888-:22
+```
 
 ## Arduino
 
@@ -55,14 +110,15 @@ ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password nixos@127.0
 > [Arduino Pro Micro (ATmega32U4)](https://www.amazon.de/EntwicklungBoards-Binghe-Mikrocontroller-Entwicklungsboard-Selbst-USB-Updater/dp/B0D69JLJ97) <br>
 > [USB C Adapter](https://www.amazon.de/dp/B0BYK917NM)
 
-
 ---
+
 ### Circuit diagram
 
 <a href="arduino/pic/circuit-diagram-basis.png"><img src="arduino/pic/circuit-diagram-basis.png" height="200" alt="circuit-diagram-basis"></a>
 <a href="arduino/pic/circuit-diagram-touch-modul.png"><img src="arduino/pic/circuit-diagram-touch-modul.png" height="200" alt="circuit-diagram-touch-modul"></a>
 
 ---
+
 ### PCB Design
 
 <a href="arduino/pic/pcb-diagram.png"><img src="arduino/pic/pcb-diagram.png" height="250" alt="pcb-diagram"></a>
@@ -73,6 +129,7 @@ ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password nixos@127.0
 > You can go to [JLCPCB](https://jlcpcb.com) and upload the [files](arduino/pcb/touch-shield/production/) and be production ready
 
 ---
+
 ### Case
 
 <a href="arduino/3mf/arduino_case.scad"><img src="arduino/pic/case-view.png" height="200" alt="3D View of OpenSacd"></a>
@@ -81,6 +138,7 @@ ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password nixos@127.0
 <a href="arduino/pic/case-print-bottom.png"><img src="arduino/pic/case-print-bottom.png" height="200" alt="Print Model GeSliced with Supports Bottom View"></a>
 
 ---
+
 ### Final Product
 
 <a href="arduino/pic/final.png"><img src="arduino/pic/final.png" height="200" alt="Final Product"></a>
@@ -88,6 +146,7 @@ ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password nixos@127.0
 <a href="arduino/pic/pcb-final.png"><img src="arduino/pic/pcb-final.png" height="200" alt="Touch Sensor"></a>
 
 ---
+
 ### Code
 
 ```sh
@@ -95,7 +154,8 @@ ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password nixos@127.0
 arduino-ide
 ```
 
-> [!IMPORTANT]  
+> [!IMPORTANT]
+>
 > - Board Manager -> Arduino AVR Boards -> Install <br>
 > - Libary Manager -> Keybaord -> Install <br>
 > - Tools -> Board -> Arduino AVR Boards -> Arduino Leonardo <br>
@@ -105,8 +165,8 @@ arduino-ide
 
 A simple script for the USB HID (Human Interface Device) functionality of the Arduino Pro Micro. This code sends a text message whenever the board is connected to a computer.
 
-
 ---
+
 #### Simple example
 
 ```cpp
@@ -128,6 +188,7 @@ void loop() {
 <br>
 
 ---
+
 #### Code for Production
 
 > [!CAUTION]
@@ -136,17 +197,15 @@ void loop() {
 
 > [!TIP]
 > workaround in my case for GNOME/KDE: <br>
-> ```gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'us')]"``` <br>
-> ```gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'de')]"``` <br>
+> `gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'us')]"` <br>
+> `gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'de')]"` <br>
 
 Upload the [Code](arduino/ino/touch.ino) to the Arduino Pro Micro. Don't forget to update the token for your GitHub account accordingly.
 
 > [!NOTE]  
-> ```const char* TOKEN = "...";```<br>
+> `const char* TOKEN = "...";`<br>
 > create a GitHub Token, go to: <br>
 > Settings -> Developer Settings -> Personal access tokens -> Fine-grained tokens -> REPO -> Repository permissions -> Contents -> read-only -> Generate Token
-
-
 
 <!-- ## Additional - -->
 
