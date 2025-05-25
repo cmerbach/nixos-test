@@ -29,5 +29,5 @@
     environment.interactiveShellInit = ''
         alias nr="git -C /home/user/nixos/ add . && sudo nixos-rebuild --impure switch";
     '';
-    
+
 }

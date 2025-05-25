@@ -85,7 +85,7 @@
                     sudo nixos-install --no-root-passwd --impure --flake .#"$HOSTNAME"
                     git remote -v | head -n1 | sed 's/https:\/\/github.com\//git@github.com:/' | awk '{print $2}' | xargs -I {} git remote set-url origin {}
                     git remote -v
-                    mv $REPO /mnt/home/user/
+                    cd .. && mv $REPO/ /mnt/home/user/
             '';
         };
     };
