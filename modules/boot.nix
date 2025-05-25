@@ -15,7 +15,11 @@
         # binfmt.emulatedSystems = [ "aarch64-linux" ]; # https://github.com/plmercereau/nixos-pi-zero-2
 
         # enable dmesg logging
-        kernelParams = [ "loglevel=7" ];
+        kernelParams = [ 
+            "loglevel=7"
+            "console=tty0" 
+            "console=ttyS0,115200n8"
+        ];
     };
 
     # enable all firmware regardless of license
