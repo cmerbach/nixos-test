@@ -3,8 +3,6 @@
 
     # enable flakes command
     nix.settings.experimental-features = [ "nix-command flakes" ];
-    # boot config for self contained when not using boot-...nix
-    boot.loader.grub.device = "nodev";
     # enable unfree software
     nixpkgs.config.allowUnfree = true;
     nixpkgs.config.allowBroken = true;
@@ -36,15 +34,13 @@
 
     # Select internationalisation properties.
     i18n.defaultLocale = "de_DE.UTF-8";
-    # console = {
-    #   font = "Lat2-Terminus16";
-    #   keyMap = "de";
-    #   useXkbConfig = true; # use xkb.options in tty.
-    # };
 
     # ---( Enable GNOME Desktop Environment )---#
-    # Enable the X11 windowing system.
+    ### Enable the X11 windowing system.
     # services.xserver.enable = true;
+    ### Configure keymap in X11
+    # services.xserver.xkb.layout = "de";
+    # services.xserver.xkb.variant = "";
     # Enable the GNOME Desktop Environment
     services.xserver = {
         displayManager = {
@@ -91,10 +87,6 @@
         yelp
     ];
     #-----
-
-    # Configure keymap in X11
-    services.xserver.xkb.layout = "de";
-    services.xserver.xkb.variant = "";
 
     # Configure console keymap
     console.keyMap = "de";
@@ -148,15 +140,6 @@
             DOWNLOAD=Downloads
         '';
     };
-
-    # enable YubiKey support and also for Android SDK
-    services.udev.packages = with pkgs; [ 
-        yubikey-personalization
-        android-udev-rules
-    ];
-
-    # settings for Android SDK
-    programs.adb.enable = true;
 
     # List services that you want to enable:
 
