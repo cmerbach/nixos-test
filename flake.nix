@@ -55,6 +55,7 @@
             runtimeInputs = with pkgs; [ cowsay git pick ];
             text = ''
                     REPO=nixos-test
+
                 # ---( downlaod repo )--- #
                     cowsay -f tux I will start the preparation for the install
                     git clone https://"$ACCOUNT"@github.com/"$ACCOUNT"/$REPO.git 2> /dev/null || \
@@ -81,10 +82,10 @@
                             
                 # ---( install nixos )--- #
                     cowsay -f dragon I will burn nixos to your computer
-                    sudo nixos-install --impure --flake .#"$HOSTNAME"
+                    sudo nixos-install --no-root-passwd --impure --flake .#"$HOSTNAME"
                     git remote -v | head -n1 | sed 's/https:\/\/github.com\//git@github.com:/' | awk '{print $2}' | xargs -I {} git remote set-url origin {}
                     git remote -v
-                    mv nixos/ /mnt/home/user/
+                    mv $REPO /mnt/home/user/
             '';
         };
     };

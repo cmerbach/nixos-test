@@ -54,7 +54,7 @@ ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password nixos@127.0
 > The default repo you are using is: **nixos**
 
 > [!CAUTION]
-> To run disko need **2GB** of additional space
+> To run disko needs **2GB** of additional space
 
 #### install by hand
 
