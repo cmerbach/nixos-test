@@ -27,8 +27,7 @@
     ];
 
     environment.interactiveShellInit = ''
-        alias nrm="git -C /home/user/nixos/ add . && sudo nixos-rebuild switch --flake '/home/user/nixos/#minimal'";
+        alias nr="git -C /home/user/nixos/ add . && sudo nixos-rebuild --impure switch";
     '';
 
-    # system.stateVersion = "24.11"; # define in flake.nix
 }
