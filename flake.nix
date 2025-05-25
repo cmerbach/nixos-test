@@ -43,8 +43,8 @@
                 ./hosts/${hostname}/hardware-configuration.nix # created on the fly if necessary
                 ./modules/disko.nix
 
-                # ./modules/boot.nix
-                ./modules/server.nix
+                ./modules/boot.nix
+                ./modules/desktop.nix
                 
             ];
         };

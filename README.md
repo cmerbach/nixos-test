@@ -63,7 +63,7 @@ ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password nixos@127.0
 export ACCOUNT=
 export BRANCH=
 # run the install 
-nix --experimental-features "nix-command flakes" run --no-write-lock-file git+https://github.com/$ACCOUNT/nixos?ref="$BRANCH"#install
+nix --experimental-features "nix-command flakes" run --refresh --no-write-lock-file git+https://github.com/$ACCOUNT/nixos?ref="$BRANCH"#install
 ```
 
 #### install by copy and paste
@@ -74,7 +74,7 @@ read -p 'Account: ' ACCOUNT && export ACCOUNT && \
 read -p 'BRANCH: ' BRANCH && export BRANCH && \
 read -p 'PASSWORD: ' PASSWORD && export PASSWORD && \
 # run the install 
-ACCOUNT="$ACCOUNT" PASSWORD="$PASSWORD" nix --experimental-features "nix-command flakes" run --no-write-lock-file git+https://"$ACCOUNT":"$PASSWORD"@github.com/$ACCOUNT/nixos?ref="$BRANCH"#install
+ACCOUNT="$ACCOUNT" PASSWORD="$PASSWORD" nix --experimental-features "nix-command flakes" run --refresh --no-write-lock-file git+https://"$ACCOUNT":"$PASSWORD"@github.com/$ACCOUNT/nixos?ref="$BRANCH"#install
 ```
 
 #### install by runme 
@@ -91,7 +91,7 @@ export ACCOUNT='$ACCOUNT' && \
 export BRANCH='$BRANCH' && \
 export PASSWORD='$PASSWORD' && \
 ACCOUNT=\"\$ACCOUNT\" PASSWORD=\"\$PASSWORD\" \
-nix --experimental-features \"nix-command flakes\" run --no-write-lock-file git+https://\"\$ACCOUNT\":\"\$PASSWORD\"@github.com/\$ACCOUNT/\$REPO?ref=\"\$BRANCH\"#install"
+nix --experimental-features \"nix-command flakes\" run --refresh --no-write-lock-file git+https://\"\$ACCOUNT\":\"\$PASSWORD\"@github.com/\$ACCOUNT/\$REPO?ref=\"\$BRANCH\"#install"
 ```
 
 ### Reboot and start the system

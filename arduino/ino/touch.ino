@@ -41,7 +41,7 @@ void loop() {
     Keyboard.print("sudo loadkezs us 2>/dev/null || sudo loadkeys us 2>/dev/null");
     Keyboard.write(KEY_RETURN);
     delay(2000);
-    Keyboard.print("read -p 'Account: ' ACCOUNT && read -p 'Branch: ' BRANCH && ACCOUNT=\"$ACCOUNT\" PASSWORD=\"" + String(TOKEN) + "\" BRANCH=\"$BRANCH\" nix --experimental-features \"nix-command flakes\" run --no-write-lock-file git+https://${ACCOUNT}:" + String(TOKEN) + "@github.com/$ACCOUNT/nixos?ref=\"$BRANCH\"#install");
+    Keyboard.print("read -p 'Account: ' ACCOUNT && read -p 'Branch: ' BRANCH && ACCOUNT=\"$ACCOUNT\" PASSWORD=\"" + String(TOKEN) + "\" BRANCH=\"$BRANCH\" nix --experimental-features \"nix-command flakes\" run --refresh --no-write-lock-file git+https://${ACCOUNT}:" + String(TOKEN) + "@github.com/$ACCOUNT/nixos?ref=\"$BRANCH\"#install");
     Keyboard.write(KEY_RETURN);
     Keyboard.end();
     delay(2000);
