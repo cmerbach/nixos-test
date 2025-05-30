@@ -9,8 +9,8 @@
 
         kernelPackages = pkgs.linuxPackages_latest;
         # boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_5;
-        kernelModules = [ "v4l2loopback" ];
-        extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
+        # kernelModules = [ "v4l2loopback" ]; # -> not working on the 30.05.25
+        # extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ]; # -> not working on the 30.05.25
 
         # binfmt.emulatedSystems = [ "aarch64-linux" ]; # https://github.com/plmercereau/nixos-pi-zero-2
 
