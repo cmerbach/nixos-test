@@ -57,6 +57,8 @@
 
                     REPO=nixos-test
 
+                    # nix-collect-garbage -d
+
                 # ---( downlaod repo )--- #
                     cowsay -f tux I will start the preparation for the install
                     git clone https://"$ACCOUNT"@github.com/"$ACCOUNT"/$REPO.git 2> /dev/null || \
