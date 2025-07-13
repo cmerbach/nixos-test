@@ -1,0 +1,25 @@
+{
+  "extends": [
+    "config:recommended"
+  ],
+  "description": "Schedule every sunday at 18:00",
+  "schedule": [
+    "* 18 * * 0"
+  ],
+  "timezone": "Europe/Berlin",
+  "prCreation": "immediate",
+  "recreateClosed": true,
+  "dependencyDashboard": true,
+  "prHourlyLimit": 0,
+  "packageRules": [
+    {
+      "matchManagers": [
+        "github-actions"
+      ],
+      "addLabels": [
+        "dependencies",
+        "github-actions"
+      ]
+    }
+  ]
+}
