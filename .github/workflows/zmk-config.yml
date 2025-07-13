@@ -1,0 +1,122 @@
+name: Build ZMK Firmware
+
+on:
+  push:
+    paths:
+      - 'zmk/zmk-config/**'
+      - '.github/workflows/zmk-config.yml'
+  pull_request:
+    paths:
+      - 'zmk/zmk-config/**'
+      - '.github/workflows/zmk-config.yml'
+
+env:
+  CONFIG_FOLDER: "zmk/zmk-config"
+  BUILD_DIR: "/build"
+  BOARD: "nice_nano_v2"
+  LEFT_SHIELD: "corne_left nice_view_adapter nice_view"
+  RIGHT_SHIELD: "corne_right nice_view_adapter nice_view"
+  LEFT_NAME: "corne_left_nice_view"
+  RIGHT_NAME: "corne_right_nice_view"
+  DEBIAN_FRONTEND: "noninteractive"
+  PIP_BREAK_SYSTEM_PACKAGES: "1"
+  ZEPHYR_SDK_VERSION: "0.17.2"
+  ZMK_VERSION: "0.2.1"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup build info
+        run: |
+          echo "Starting ZMK build process..."
+          echo "SDK Version: $ZEPHYR_SDK_VERSION"
+          echo "Config Folder: $CONFIG_FOLDER"
+          echo "Build Directory: $BUILD_DIR"
+
+      - name: Create build folder and install dependencies
+        run: |
+          echo "=== Create build folder ==="
+          sudo mkdir -p $BUILD_DIR
+          sudo chown $USER:$USER $BUILD_DIR
+          cd $BUILD_DIR
+          echo "=== Install dependencies ==="
+          sudo apt update && sudo apt upgrade -y
+          sudo apt install -y git python3-pip cmake wget xz-utils file ninja-build
+        
+      - name: Download ZMK Repo
+        run: |
+          echo "=== Downloading ZMK Repo==="
+          cd $BUILD_DIR
+          wget https://github.com/zmkfirmware/zmk/archive/refs/tags/v${ZMK_VERSION}.tar.gz
+          tar xvfz v${ZMK_VERSION}.tar.gz
+        
+      - name: Install ZMK dependencies
+        run: |
+          echo "=== Installing ZMK dependencies ==="
+          cd $BUILD_DIR/zmk-${ZMK_VERSION}
+          pip3 install -U west --break-system-packages
+          west init -l app/
+          west update
+          pip3 install -r zephyr/scripts/requirements-base.txt --break-system-packages
+
+      - name: Download Zephyr SDK
+        run: |
+          echo "=== Downloading Zephyr SDK ==="
+          cd $BUILD_DIR
+          SDK_FILE="zephyr-sdk-${ZEPHYR_SDK_VERSION}_linux-x86_64.tar.xz"
+          wget "https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v${ZEPHYR_SDK_VERSION}/${SDK_FILE}"
+          wget -O - "https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v${ZEPHYR_SDK_VERSION}/sha256.sum" | shasum --check --ignore-missing
+        
+      - name: Install Zephyr SDK
+        run: |
+          echo "=== Installing Zephyr SDK ==="
+          cd $BUILD_DIR
+          tar xvf zephyr-sdk-${ZEPHYR_SDK_VERSION}_linux-x86_64.tar.xz
+          cd zephyr-sdk-${ZEPHYR_SDK_VERSION}
+          yes | ./setup.sh
+        
+      - name: Copy zmk-config
+        run: |
+          echo "=== Copy zmk-config ==="
+          cp -r $CONFIG_FOLDER $BUILD_DIR/zmk-${ZMK_VERSION}/zmk-config
+          cd $BUILD_DIR/zmk-${ZMK_VERSION}
+          ls -la zmk-config/
+        
+      - name: Build firmware
+        run: |
+          echo "=== Building firmware ==="
+          cd $BUILD_DIR/zmk-${ZMK_VERSION}
+          
+          echo "Building left side..."
+          west build -d build/left -s app -- \
+            -DZMK_CONFIG="$(pwd)/zmk-config/config" \
+            -DBOARD=$BOARD \
+            -DSHIELD="$LEFT_SHIELD" \
+            -DCONFIG_KERNEL_BIN_NAME="\"$LEFT_NAME\""
+          
+          echo "Building right side..."
+          west build -d build/right -s app -- \
+            -DZMK_CONFIG="$(pwd)/zmk-config/config" \
+            -DBOARD=$BOARD \
+            -DSHIELD="$RIGHT_SHIELD" \
+            -DCONFIG_KERNEL_BIN_NAME="\"$RIGHT_NAME\""
+
+      # Upload artifacts
+      - name: Create artifacts - Upload left side firmware
+        uses: actions/upload-artifact@v4
+        with:
+          name: corne_left_nice_view.uf2
+          path: ${{ env.BUILD_DIR }}/zmk-${ZMK_VERSION}/build/left/zephyr/${{ env.LEFT_NAME }}.uf2
+          retention-days: 30
+          
+      - name: Create artifacts - Upload right side firmware
+        uses: actions/upload-artifact@v4
+        with:
+          name: corne_right_nice_view.uf2
+          path: ${{ env.BUILD_DIR }}/zmk-${ZMK_VERSION}/build/right/zephyr/${{ env.RIGHT_NAME }}.uf2
+          retention-days: 30
