@@ -20,7 +20,7 @@ env:
   RIGHT_NAME: "corne_right_nice_view"
   DEBIAN_FRONTEND: "noninteractive"
   PIP_BREAK_SYSTEM_PACKAGES: "1"
-  ZEPHYR_SDK_VERSION: "0.17.2"
+  ZEPHYR_SDK_VERSION: "0.16.4"
   ZMK_VERSION: "0.2.1"
 
 jobs:
