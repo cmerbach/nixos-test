@@ -111,12 +111,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: corne_left_nice_view.uf2
-          path: ${{ env.BUILD_DIR }}/zmk-${ZMK_VERSION}/build/left/zephyr/${{ env.LEFT_NAME }}.uf2
+          path: ${{ env.BUILD_DIR }}/zmk-${{ env.ZMK_VERSION }}/build/left/zephyr/${{ env.LEFT_NAME }}.uf2
           retention-days: 30
           
       - name: Create artifacts - Upload right side firmware
         uses: actions/upload-artifact@v4
         with:
           name: corne_right_nice_view.uf2
-          path: ${{ env.BUILD_DIR }}/zmk-${ZMK_VERSION}/build/right/zephyr/${{ env.RIGHT_NAME }}.uf2
+          path: ${{ env.BUILD_DIR }}/zmk-${{ env.ZMK_VERSION }}/build/right/zephyr/${{ env.RIGHT_NAME }}.uf2
           retention-days: 30
