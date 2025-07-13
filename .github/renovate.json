@@ -23,6 +23,18 @@
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "zephyrproject-rtos/sdk-ng",
       "extractVersionTemplate": "^v(?<version>.*)$"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^\\.github/workflows/.*\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "ZMK_VERSION:\\s*\"(?<currentValue>[^\"]+)\""
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "zmkfirmware/zmk",
+      "extractVersionTemplate": "^v(?<version>.*)$"
     }
   ],
   "packageRules": [
@@ -40,7 +52,8 @@
         "custom.regex"
       ],
       "matchDepNames": [
-        "zephyrproject-rtos/sdk-ng"
+        "zephyrproject-rtos/sdk-ng",
+        "zmkfirmware/zmk"
       ],
       "addLabels": [
         "dependencies",
