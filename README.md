@@ -242,6 +242,92 @@ Upload the [Code](arduino/ino/touch.ino) to the Arduino Pro Micro. Don't forget 
 > Profile -> Settings -> Integrations -> Applications -> Renovate -> Configure
 
 
+## Corne Cherry v3 Keyboard
+
+- [Hardware Toolkit](https://keebd.com/de-de/products/corne-cherry-v3-rgb-keyboard-kit)
+- [Microcontroller](https://de.aliexpress.com/item/1005006271779544.html)
+- [Switches](https://www.amazon.de/gp/product/B0BM9KR6QH)
+
+> [!TIP]
+> Videos for help to build: <br>
+> [How To Build A Corne Keyboard: The Complete Beginner's Guide](https://www.youtube.com/watch?v=vzDTdLaAzXc) <br>
+> [How to Build a Wireless Corne Keyboard](https://www.youtube.com/watch?v=FJgvi7WShxY) <br>
+> [Corne Wireless Split Keyboard Build](https://www.youtube.com/watch?v=Allaz9XloCo) <br>
+> [Guide for soldering all components](https://www.youtube.com/watch?v=gA9IZ1u0i2U)
+
+### Build ZMK 
+
+> [!IMPORTANT]
+> [Default Values](https://github.com/zmkfirmware/zmk/tree/main/app/boards/shields/corne)
+
+```sh
+bash -c "$(curl -fsSL https://zmk.dev/setup.sh)"
+# -> 17) Corne -> 10) nice!nano v2 -> Y) Enter -> Y) Enter -> Y) Enter
+# rm .github for using local
+```
+
+> [!TIP]
+> [ZMK System Configuration for Bluetooth and USB](https://zmk.dev/docs/config/system)
+> [ZMK Split Configuration](https://zmk.dev/docs/config/split)
+
+#### Custom Build Pipeline
+
+This repository uses a custom GitHub Actions [workflow](.github/workflows/zmk-config.yml) to build ZMK firmware for the Corne Cherry v3 keyboard with Nice!Nano controllers. The pipeline generates two firmware files: `corne_left.uf2` and `corne_right.uf2`.
+
+> [!NOTE]
+> Default config is for **bluetooth** connection
+> If using `[config:usb]`in the commit message you get the config for usb connection
+
+#### Flashing Process
+
+1. Flash Slave (Left Side) First
+- Double-press reset button on Nice!Nano to enter bootloader mode
+- Copy the corne_left.uf2 file to the mounted drive
+- Wait for automatic disconnect
+
+2. Flash Master (Right Side)
+- Double-press reset button on Nice!Nano to enter bootloader mode
+- Copy the corne_right.uf2 file to the mounted drive
+- Wait for automatic disconnect
+
+3. Connection Sequence
+- Power on the master
+- Power on the slave via usb or trrs cable
+- Slave should automatically connect to master via Bluetooth
+- Connect keyboard to computer via Bluetooth (only master will appear in device list)
+
+#### Bluetooth Bond Management
+
+##### Clear Bonds via Config
+
+> [!IMPORTANT]
+> - Temporarily enable CONFIG_ZMK_BLE_CLEAR_BONDS_ON_START=y in corne.conf <br>
+> - Flash firmware, press reset button once to boot and clear all bonds, then re-comment the line and flash again
+
+##### Clear Bonds via Keymap
+
+> [!CAUTION]
+> - **Lower layer + A key: &bt BT_CLR** (clears all stored Bluetooth connections) <br>
+> - Use when device won't reconnect after being removed from computer's Bluetooth list <br>
+> - This is extremely needed to clear the device for a reconnect
+
+### Keycaps
+
+<a href="zmk/keycaps/keycap-top.png"><img src="zmk/keycaps/keycap-top.png" height="200" alt="Keycap Top View"></a>
+<a href="zmk/keycaps/keycap-bottom.png"><img src="zmk/keycaps/keycap-bottom.png" height="200" alt="Keycap Bottom View"></a>
+
+> [!NOTE] 
+> **File:** [keycaps.scad](zmk/keycaps/keycaps.scad)
+> If you don't want a socket just set: ```base_platform = false``` <br>
+> For a longer keycap simply set the variable: ```wide_keycap = true```
+
+### Layout
+
+<a href="zmk/keycaps/keycaps-layout-blank.png"><img src="zmk/keycaps/keycaps-layout-blank.png" height="200" alt="Keycaps Blank Layout"></a>
+
+> [!TIP]
+> [Keymap Editor](https://github.com/nickcoutsos/keymap-editor)
+
 
 <!-- ## Additional - -->
 
