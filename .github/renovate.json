@@ -8,10 +8,13 @@
   ],
   "timezone": "Europe/Berlin",
   "prCreation": "immediate",
-  "recreateClosed": true,
+  "recreateWhen": "always",
   "dependencyDashboard": true,
   "prHourlyLimit": 0,
-  "enabledManagers": ["custom.regex", "github-actions"],
+  "enabledManagers": [
+    "custom.regex",
+    "github-actions"
+  ],
   "customManagers": [
     {
       "customType": "regex",
@@ -82,35 +85,60 @@
   ],
   "packageRules": [
     {
-      "matchManagers": ["nix"],
+      "matchManagers": [
+        "nix"
+      ],
       "enabled": false,
       "description": "Disable standard Nix manager completely"
     },
     {
-      "matchManagers": ["custom.regex"],
-      "matchDepNames": ["nixos/nixpkgs"],
+      "matchManagers": [
+        "custom.regex"
+      ],
+      "matchDepNames": [
+        "nixos/nixpkgs"
+      ],
       "groupName": "nixos",
       "commitMessageTopic": "NixOS",
-      "addLabels": ["nixos"],
+      "addLabels": [
+        "nixos"
+      ],
       "rangeStrategy": "bump",
       "separateMinorPatch": false,
       "separateMajorMinor": false,
       "description": "Keep all NixOS versions in sync - no separation"
     },
     {
-      "matchManagers": ["github-actions"],
-      "addLabels": ["dependencies", "github-actions"]
+      "matchManagers": [
+        "github-actions"
+      ],
+      "addLabels": [
+        "dependencies",
+        "github-actions"
+      ]
     },
     {
-      "matchManagers": ["custom.regex"],
-      "matchDepNames": ["zephyrproject-rtos/sdk-ng"],
-      "addLabels": ["zephyr"],
+      "matchManagers": [
+        "custom.regex"
+      ],
+      "matchDepNames": [
+        "zephyrproject-rtos/sdk-ng"
+      ],
+      "addLabels": [
+        "zephyr"
+      ],
       "commitMessageTopic": "Zephyr"
     },
     {
-      "matchManagers": ["custom.regex"],
-      "matchDepNames": ["zmkfirmware/zmk"],
-      "addLabels": ["zmk"],
+      "matchManagers": [
+        "custom.regex"
+      ],
+      "matchDepNames": [
+        "zmkfirmware/zmk"
+      ],
+      "addLabels": [
+        "zmk"
+      ],
       "commitMessageTopic": "ZMK"
     }
   ]
