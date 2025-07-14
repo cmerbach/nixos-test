@@ -1,0 +1,117 @@
+{
+  "extends": [
+    "config:recommended"
+  ],
+  "description": "Schedule every sunday at 18:00",
+  "schedule": [
+    "* 18 * * 0"
+  ],
+  "timezone": "Europe/Berlin",
+  "prCreation": "immediate",
+  "recreateClosed": true,
+  "dependencyDashboard": true,
+  "prHourlyLimit": 0,
+  "enabledManagers": ["custom.regex", "github-actions"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update NixOS nixpkgs releases",
+      "managerFilePatterns": [
+        "/flake\\.nix$/"
+      ],
+      "matchStrings": [
+        "nixpkgs\\.url\\s*=\\s*\"github:nixos/nixpkgs/release-(?<currentValue>[^\"]+)\""
+      ],
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "nixos/nixpkgs",
+      "extractVersionTemplate": "^(?<version>.*)$",
+      "versioningTemplate": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)$"
+    },
+    {
+      "customType": "regex",
+      "description": "Update Home Manager releases",
+      "managerFilePatterns": [
+        "/flake\\.nix$/"
+      ],
+      "matchStrings": [
+        "home-manager/release-(?<currentValue>[^\"]+)\""
+      ],
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "nixos/nixpkgs",
+      "extractVersionTemplate": "^(?<version>.*)$",
+      "versioningTemplate": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)$"
+    },
+    {
+      "customType": "regex",
+      "description": "Update NixOS system.stateVersion",
+      "managerFilePatterns": [
+        "/flake\\.nix$/"
+      ],
+      "matchStrings": [
+        "system\\.stateVersion\\s*=\\s*\"(?<currentValue>[^\"]+)\""
+      ],
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "nixos/nixpkgs",
+      "extractVersionTemplate": "^(?<version>.*)$",
+      "versioningTemplate": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)$"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^\\.github/workflows/.*\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "ZEPHYR_SDK_VERSION:\\s*\"(?<currentValue>[^\"]+)\""
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "zephyrproject-rtos/sdk-ng",
+      "extractVersionTemplate": "^v(?<version>.*)$"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^\\.github/workflows/.*\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "ZMK_VERSION:\\s*\"(?<currentValue>[^\"]+)\""
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "zmkfirmware/zmk",
+      "extractVersionTemplate": "^v(?<version>.*)$"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchManagers": ["nix"],
+      "enabled": false,
+      "description": "Disable standard Nix manager completely"
+    },
+    {
+      "matchManagers": ["custom.regex"],
+      "matchDepNames": ["nixos/nixpkgs"],
+      "groupName": "nixos",
+      "commitMessageTopic": "NixOS",
+      "addLabels": ["nixos"],
+      "rangeStrategy": "bump",
+      "separateMinorPatch": false,
+      "separateMajorMinor": false,
+      "description": "Keep all NixOS versions in sync - no separation"
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "addLabels": ["dependencies", "github-actions"]
+    },
+    {
+      "matchManagers": ["custom.regex"],
+      "matchDepNames": ["zephyrproject-rtos/sdk-ng"],
+      "addLabels": ["zephyr"],
+      "commitMessageTopic": "Zephyr"
+    },
+    {
+      "matchManagers": ["custom.regex"],
+      "matchDepNames": ["zmkfirmware/zmk"],
+      "addLabels": ["zmk"],
+      "commitMessageTopic": "ZMK"
+    }
+  ]
+}
