@@ -71,10 +71,11 @@ nix --experimental-features "nix-command flakes" run --refresh --no-write-lock-f
 ```sh
 # set env variables
 read -p 'Account: ' ACCOUNT && export ACCOUNT && \
+read -p 'REPO: ' REPO && export REPO && \
 read -p 'BRANCH: ' BRANCH && export BRANCH && \
 read -p 'PASSWORD: ' PASSWORD && export PASSWORD && \
 # run the install 
-ACCOUNT="$ACCOUNT" PASSWORD="$PASSWORD" nix --experimental-features "nix-command flakes" run --refresh --no-write-lock-file git+https://"$ACCOUNT":"$PASSWORD"@github.com/$ACCOUNT/nixos?ref="$BRANCH"#install
+ACCOUNT="$ACCOUNT" PASSWORD="$PASSWORD" nix --experimental-features "nix-command flakes" run --refresh --no-write-lock-file git+https://"$ACCOUNT":"$PASSWORD"@github.com/$ACCOUNT/$REPO?ref="$BRANCH"#install
 ```
 
 #### install by runme 
