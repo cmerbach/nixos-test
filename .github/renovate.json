@@ -9,7 +9,7 @@
   "timezone": "Europe/Berlin",
   "prCreation": "immediate",
   "recreateWhen": "always",
-  "dependencyDashboard": true,
+  "dependencyDashboard": false,
   "prHourlyLimit": 0,
   "enabledManagers": [
     "custom.regex",
