@@ -231,6 +231,18 @@ Upload the [Code](arduino/ino/touch.ino) to the Arduino Pro Micro. Don't forget 
 > create a GitHub Token, go to: <br>
 > Settings -> Developer Settings -> Personal access tokens -> Fine-grained tokens -> REPO -> Repository permissions -> Contents -> read-only -> Generate Token
 
+
+## Renovate
+
+- [Enabling Renovate for GitHub](https://github.com/apps/renovate)
+- [Renovate Dashboard](https://developer.mend.io/github/)
+
+> [!TIP]
+> Setting up renovate for specific repos: <br>
+> Profile -> Settings -> Integrations -> Applications -> Renovate -> Configure
+
+
+
 <!-- ## Additional - -->
 
 <!-- Hier könnte Ihre Werbung stehen -->
