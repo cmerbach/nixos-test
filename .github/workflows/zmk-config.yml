@@ -16,12 +16,13 @@ env:
   BOARD: "nice_nano_v2"
   LEFT_SHIELD: "corne_left nice_view_adapter nice_view"
   RIGHT_SHIELD: "corne_right nice_view_adapter nice_view"
-  LEFT_NAME: "corne_left_nice_view"
-  RIGHT_NAME: "corne_right_nice_view"
+  LEFT_NAME: "corne_left"
+  RIGHT_NAME: "corne_right"
   DEBIAN_FRONTEND: "noninteractive"
   PIP_BREAK_SYSTEM_PACKAGES: "1"
   ZEPHYR_SDK_VERSION: "0.16.4"
   ZMK_VERSION: "0.2.1"
+  ZMK_USE_MAIN: true 
 
 jobs:
   build:
@@ -52,8 +53,15 @@ jobs:
         run: |
           echo "=== Downloading ZMK Repo==="
           cd $BUILD_DIR
-          wget https://github.com/zmkfirmware/zmk/archive/refs/tags/v${ZMK_VERSION}.tar.gz
-          tar xvfz v${ZMK_VERSION}.tar.gz
+          if [ "$ZMK_USE_MAIN" = "true" ]; then
+            echo "ZMK_VERSION=main" >> $GITHUB_ENV
+              git clone https://github.com/zmkfirmware/zmk.git zmk-main
+              echo "Using main branch"
+            else
+              wget https://github.com/zmkfirmware/zmk/archive/refs/tags/v${ZMK_VERSION}.tar.gz
+              tar xvfz v${ZMK_VERSION}.tar.gz
+              echo "Using version ${ZMK_VERSION}"
+          fi
         
       - name: Install ZMK dependencies
         run: |
@@ -110,13 +118,13 @@ jobs:
       - name: Create artifacts - Upload left side firmware
         uses: actions/upload-artifact@v4
         with:
-          name: corne_left_nice_view.uf2
+          name: ${{ env.LEFT_NAME }}.uf2
           path: ${{ env.BUILD_DIR }}/zmk-${{ env.ZMK_VERSION }}/build/left/zephyr/${{ env.LEFT_NAME }}.uf2
           retention-days: 30
           
       - name: Create artifacts - Upload right side firmware
         uses: actions/upload-artifact@v4
         with:
-          name: corne_right_nice_view.uf2
+          name: ${{ env.RIGHT_NAME }}.uf2
           path: ${{ env.BUILD_DIR }}/zmk-${{ env.ZMK_VERSION }}/build/right/zephyr/${{ env.RIGHT_NAME }}.uf2
           retention-days: 30
