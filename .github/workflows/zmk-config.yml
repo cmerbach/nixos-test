@@ -99,6 +99,8 @@ jobs:
           
           if [[ "$COMMIT_MSG" == *"[config:usb]"* ]]; then
             echo "BUILD_SUFFIX=_usb" >> $GITHUB_ENV
+            echo "LEFT_SHIELD=corne_left" >> $GITHUB_ENV
+            echo "RIGHT_SHIELD=corne_right" >> $GITHUB_ENV
             sed -i 's/CONFIG_ZMK_BLE=y/CONFIG_ZMK_BLE=n/' zmk-config/config/corne.conf
             sed -i 's/CONFIG_ZMK_USB=n/CONFIG_ZMK_USB=y/' zmk-config/config/corne.conf
             sed -i 's/# CONFIG_ZMK_USB_BOOT=y/CONFIG_ZMK_USB_BOOT=y/' zmk-config/config/corne.conf
