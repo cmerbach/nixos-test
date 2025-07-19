@@ -88,12 +88,21 @@ jobs:
           cd zephyr-sdk-${ZEPHYR_SDK_VERSION}
           yes | ./setup.sh
         
-      - name: Copy zmk-config
+      - name: Copy and modify zmk-config
         run: |
-          echo "=== Copy zmk-config ==="
+          echo "=== Copy and modify zmk-config ==="
           cp -r $CONFIG_FOLDER $BUILD_DIR/zmk-${ZMK_VERSION}/zmk-config
           cd $BUILD_DIR/zmk-${ZMK_VERSION}
-          ls -la zmk-config/
+          ls -al
+          
+          COMMIT_MSG="${{ github.event.head_commit.message }}"
+          
+          if [[ "$COMMIT_MSG" == *"[config:usb]"* ]]; then
+            echo "BUILD_SUFFIX=_usb" >> $GITHUB_ENV
+            sed -i 's/CONFIG_ZMK_BLE=y/CONFIG_ZMK_BLE=n/' zmk-config/config/corne.conf
+            sed -i 's/CONFIG_ZMK_USB=n/CONFIG_ZMK_USB=y/' zmk-config/config/corne.conf
+            sed -i 's/# CONFIG_ZMK_USB_BOOT=y/CONFIG_ZMK_USB_BOOT=y/' zmk-config/config/corne.conf
+          fi
         
       - name: Build firmware
         run: |
@@ -118,13 +127,13 @@ jobs:
       - name: Create artifacts - Upload left side firmware
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.LEFT_NAME }}.uf2
+          name: ${{ env.LEFT_NAME }}${{ env.BUILD_SUFFIX }}.uf2
           path: ${{ env.BUILD_DIR }}/zmk-${{ env.ZMK_VERSION }}/build/left/zephyr/${{ env.LEFT_NAME }}.uf2
           retention-days: 30
           
       - name: Create artifacts - Upload right side firmware
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.RIGHT_NAME }}.uf2
+          name: ${{ env.RIGHT_NAME }}${{ env.BUILD_SUFFIX }}.uf2
           path: ${{ env.BUILD_DIR }}/zmk-${{ env.ZMK_VERSION }}/build/right/zephyr/${{ env.RIGHT_NAME }}.uf2
           retention-days: 30
