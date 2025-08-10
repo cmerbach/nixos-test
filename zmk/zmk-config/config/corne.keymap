@@ -36,19 +36,19 @@
 
         layer-1 {
             bindings = <
-&trans  &kp NUMBER_1  &kp NUMBER_2  &kp NUMBER_3  &kp NUMBER_4  &kp NUMBER_5    &trans  &trans  &trans  &trans  &trans  &kp DELETE
-&trans  &trans        &trans        &trans        &trans        &trans          &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans        &trans        &trans        &trans        &trans          &trans  &trans  &trans  &trans  &trans  &trans
-                                    &trans        &trans        &trans          &trans  &trans  &trans
+&trans  &kp NUMBER_1   &kp NUMBER_2           &kp NUMBER_3  &kp NUMBER_4  &kp NUMBER_5    &trans     &trans         &trans  &trans  &trans  &kp DELETE
+&trans  &kp RA(MINUS)  &kp LS(NUMBER_7)       &kp RA(N7)    &kp RA(N0)    &trans          &trans     &trans         &trans  &trans  &trans  &trans
+&trans  &kp BSLH       &kp RA(RIGHT_BRACKET)  &kp RA(N8)    &kp RA(N9)    &kp RBKT        &kp GRAVE  &kp LS(EQUAL)  &trans  &trans  &trans  &trans
+                                              &trans        &trans        &trans          &trans     &trans         &trans
             >;
         };
 
         layer-2 {
             bindings = <
-&trans         &trans     &trans         &trans         &trans                 &trans          &kp NUMBER_6  &kp N7      &kp N8            &kp N9      &kp NUMBER_0  &kp DELETE
-&kp LS(COMMA)  &kp RA(Q)  &kp RA(MINUS)  &kp BSLH       &kp NUBS               &kp LS(NUBS)    &kp RA(N8)    &kp RA(N9)  &kp RA(NUMBER_7)  &kp RA(N0)  &kp UP        &kp RBKT
-&trans         &trans     &kp GRAVE      &kp LS(EQUAL)  &kp RA(RIGHT_BRACKET)  &kp COMMA       &kp RA(NUBS)  &kp SLASH   &trans            &kp LEFT    &kp DOWN      &kp RIGHT
-                                         &trans         &trans                 &trans          &trans        &trans      &trans
+&trans  &trans  &trans  &trans  &trans  &trans    &kp NUMBER_6      &kp N7            &kp N8            &kp N9     &kp NUMBER_0  &kp DELETE
+&trans  &trans  &trans  &trans  &trans  &trans    &kp LS(NUMBER_0)  &kp LS(NUMBER_8)  &kp LS(NUMBER_9)  &kp SLASH  &kp UP        &kp RA(Q)
+&trans  &trans  &trans  &trans  &trans  &trans    &kp RA(NUBS)      &kp NUBS          &kp LS(NUBS)      &kp LEFT   &kp DOWN      &kp RIGHT
+                        &trans  &trans  &trans    &trans            &trans            &trans
             >;
         };
     };
