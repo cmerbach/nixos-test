@@ -9,7 +9,7 @@
 mkdir -p tmp
 
 # download the current version of nixos
-test ! -f tmp/nixos.iso && wget https://channels.nixos.org/nixos-24.11/latest-nixos-minimal-x86_64-linux.iso -O tmp/nixos.iso || echo "Nothing todo!"
+test ! -f tmp/nixos.iso && wget https://channels.nixos.org/nixos-25.05/latest-nixos-minimal-x86_64-linux.iso -O tmp/nixos.iso || echo "Nothing todo!"
 
 # create the device for install the os
 test ! -f tmp/nixos.img && qemu-img create -f raw tmp/nixos.img 100G || echo "Nothing todo!"

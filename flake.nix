@@ -44,7 +44,8 @@
                 ./modules/disko.nix
 
                 ./modules/boot.nix
-                ./modules/desktop.nix
+                ./modules/server.nix
+                ./modules/gnome.nix
                 
             ];
         };
