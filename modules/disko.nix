@@ -16,8 +16,8 @@
 
 { inputs, lib, hostname, ... }:
 {
-    imports = [ 
-        inputs.disko.nixosModules.disko
-        ../hosts/${hostname}/disko-config.nix
-    ];
+  imports = [ 
+  inputs.disko.nixosModules.disko
+    ../hosts/${hostname}/disko-config.nix
+  ];
 }

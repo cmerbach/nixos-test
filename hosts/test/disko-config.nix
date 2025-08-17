@@ -33,10 +33,10 @@
                 # -----
                 # extraOpenArgs = [ ];
                 # settings = {
-                    # if you want to use the key for interactive login be sure there is no trailing newline
-                    # for example use `echo -n "password" > /tmp/secret.key`
-                    # keyFile = "/home/nixos/nixos/key.key";
-                    # allowDiscards = true;
+                  # if you want to use the key for interactive login be sure there is no trailing newline
+                  # for example use `echo -n "password" > /tmp/secret.key`
+                  # keyFile = "/home/nixos/nixos/key.key";
+                  # allowDiscards = true;
                 # };
                 # additionalKeyFiles = [ "/tmp/additionalSecret.key" ];
                 content = {
@@ -55,8 +55,8 @@
                       mountpoint = "/home";
                       mountOptions = [ "compress=zstd" ];
                     };
-                    # Nested subvolumes unter /home/user
-                    # These need explicit mountpoints because /home/user is not mounted as a subvolume
+                    # nested subvolumes unter /home/user
+                    # these need explicit mountpoints because /home/user is not mounted as a subvolume
                     "/home/user/life" = {
                       mountpoint = "/home/user/life";
                       mountOptions = [ "compress=zstd" ];
