@@ -34,7 +34,7 @@
         gnome-calendar
         gnome-characters
         gnome-clocks
-        gnome-console
+        # gnome-console
         gnome-contacts
         gnome-font-viewer
         gnome-logs

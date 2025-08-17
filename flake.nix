@@ -45,7 +45,7 @@
 
                 ./modules/boot.nix
                 ./modules/server.nix
-                ./modules/gnome.nix
+                ./modules/hyprland.nix
                 
             ];
         };
