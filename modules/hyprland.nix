@@ -39,28 +39,7 @@
   # list packages installed in system profile
   # nix search wget
   environment.systemPackages = with pkgs; [
-    # ----- #
-    gnome-console 
-    waybar 
-    krabby          # Pokémon ASCII art
-    rofi-wayland    # App launcher (rofi gefunden)
-    swww            # Wallpaper daemon (swww gefunden)
-    nwg-look        # GTK Theme manager (nwg-look gefunden)
-    # Weitere JaKooLit Dependencies
-    imagemagick     # Für Wallpaper-Effekte
-    cava            # Audio visualizer
-    playerctl       # Media control
-    brightnessctl   # Brightness control
-    networkmanager  # Network management
-    blueman         # Bluetooth manager
-    pavucontrol     # Audio control
-    # Weather und Scripts Dependencies  
-    python3         # Für Weather.py
-    curl            # Für API calls
-    jq              # JSON processing
-    # System monitoring
-    htop
-    fastfetch    # System info (modern neofetch)
-   ];
+    #
+  ];
 
 }

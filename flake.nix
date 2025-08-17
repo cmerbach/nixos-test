@@ -42,20 +42,20 @@
 
         ./modules/boot.nix
         ./modules/server.nix
-        ./modules/gnome.nix
+        ./modules/hyprland.nix
 
         ./home
         {
           home-manager.users.user.home.stateVersion = "25.05";
           home-manager.users.user = {
-            additional.enable = true;
-            base.enable = true;
+            # additional.enable = true;
+            # base.enable = true;
             # gnome.enable = true;
-            # hyprland = true;
-            python.enable = true;
-            test.enable = true;
+            hyprland.enable = true;
+            # python.enable = true;
+            # test.enable = true;
             # vscode.enable = true;
-            work.enable = true;
+            # work.enable = true;
           };
         }
       ];
