@@ -10,7 +10,7 @@
       ../pkgs/python.nix
       ../pkgs/test.nix
       ../pkgs/vscode.nix
-      ../pkgs/work.nix
+      ../pkgs/exb.nix
       ../hosts/${hostname}/host.nix
     ];
   in {

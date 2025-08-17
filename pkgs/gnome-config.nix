@@ -5,6 +5,18 @@
   };
 
   config = lib.mkIf config.gnome.enable {
+
+    home.packages = with pkgs; [
+      gnomeExtensions.clipboard-indicator # https://extensions.gnome.org/extension/779/clipboard-indicator/
+      gnomeExtensions.ddterm # https://extensions.gnome.org/extension/3780/ddterm/
+      gnomeExtensions.docker # https://extensions.gnome.org/extension/5103/docker/
+      gnomeExtensions.executor # https://extensions.gnome.org/extension/2932/executor/
+      # gnomeExtensions.smart-auto-move # https://extensions.gnome.org/extension/4736/smart-auto-move/
+      gnomeExtensions.tiling-assistant # https://extensions.gnome.org/extension/3733/tiling-assistant/
+      gnomeExtensions.tray-icons-reloaded # https://extensions.gnome.org/extension/2890/tray-icons-reloaded/
+      gnomeExtensions.wtmb-window-thumbnails # https://extensions.gnome.org/extension/6816/wtmb-window-thumbnails/
+    ];
+
     # https://heywoodlh.io/nixos-gnome-settings-and-keyboard-shortcuts
     dconf.settings = {
       "org/gnome/desktop/session" = {
