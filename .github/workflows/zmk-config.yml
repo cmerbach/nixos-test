@@ -21,7 +21,7 @@ env:
   DEBIAN_FRONTEND: "noninteractive"
   PIP_BREAK_SYSTEM_PACKAGES: "1"
   ZEPHYR_SDK_VERSION: "0.16.4"
-  ZMK_VERSION: "0.2.1"
+  ZMK_VERSION: "0.3.0"
   ZMK_USE_MAIN: true 
 
 jobs:
