@@ -35,6 +35,7 @@ func NewSubMenu1(mainMenu *MainMenu) *SubMenu1 {
 			Height: buttonSize,
 			Color:  ColorBack,
 			ID:     0,
+			Shape:  ShapeRectangle,
 		},
 		// Rechter Button: Counter
 		counterButton: Button{
@@ -44,6 +45,7 @@ func NewSubMenu1(mainMenu *MainMenu) *SubMenu1 {
 			Height: buttonSize,
 			Color:  ColorCounter,
 			ID:     1,
+			Shape:  ShapeCircle,
 		},
 	}
 }
@@ -68,13 +70,7 @@ func (s *SubMenu1) HandleTouch(disp *display.Device, touch *display.CST816, x, y
 		println("SubMenu1: Back button pressed")
 
 		// Flash-Effekt
-		disp.FillRectangle(
-			s.backButton.X,
-			s.backButton.Y,
-			s.backButton.Width,
-			s.backButton.Height,
-			ColorFlash,
-		)
+		s.backButton.Flash(disp, ColorFlash)
 		time.Sleep(100 * time.Millisecond)
 
 		// Zurück zum Hauptmenü
@@ -88,13 +84,7 @@ func (s *SubMenu1) HandleTouch(disp *display.Device, touch *display.CST816, x, y
 		println(s.counter)
 
 		// Flash-Effekt
-		disp.FillRectangle(
-			s.counterButton.X,
-			s.counterButton.Y,
-			s.counterButton.Width,
-			s.counterButton.Height,
-			ColorFlash,
-		)
+		s.counterButton.Flash(disp, ColorFlash)
 		time.Sleep(100 * time.Millisecond)
 		s.counterButton.DrawButton(disp)
 

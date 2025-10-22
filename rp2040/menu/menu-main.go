@@ -37,6 +37,7 @@ func NewMainMenu() *MainMenu {
 				Height: buttonSize,
 				Color:  ColorButton1,
 				ID:     1,
+				Shape:  ShapeRectangle,
 			},
 			// Button 2 (oben rechts)
 			{
@@ -46,6 +47,7 @@ func NewMainMenu() *MainMenu {
 				Height: buttonSize,
 				Color:  ColorButton2,
 				ID:     2,
+				Shape:  ShapeRectangle,
 			},
 			// Button 3 (unten links)
 			{
@@ -55,6 +57,7 @@ func NewMainMenu() *MainMenu {
 				Height: buttonSize,
 				Color:  ColorButton3,
 				ID:     3,
+				Shape:  ShapeRectangle,
 			},
 			// Button 4 (unten rechts)
 			{
@@ -64,6 +67,7 @@ func NewMainMenu() *MainMenu {
 				Height: buttonSize,
 				Color:  ColorButton4,
 				ID:     4,
+				Shape:  ShapeRectangle,
 			},
 		},
 	}
@@ -89,14 +93,8 @@ func (m *MainMenu) HandleTouch(disp *display.Device, touch *display.CST816, x, y
 			print(m.buttons[i].ID)
 			println(" pressed")
 
-			// Flash-Effekt
-			disp.FillRectangle(
-				m.buttons[i].X,
-				m.buttons[i].Y,
-				m.buttons[i].Width,
-				m.buttons[i].Height,
-				ColorFlash,
-			)
+			// Flash-Effekt mit neuer Flash-Methode
+			m.buttons[i].Flash(disp, ColorFlash)
 			time.Sleep(100 * time.Millisecond)
 			m.buttons[i].DrawButton(disp)
 			time.Sleep(50 * time.Millisecond)

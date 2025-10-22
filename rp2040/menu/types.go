@@ -11,7 +11,15 @@ type Screen interface {
 	HandleTouch(disp *display.Device, touch *display.CST816, x, y int16) Screen
 }
 
-// Button repräsentiert einen rechteckigen Button
+// ButtonShape definiert die Form des Buttons
+type ButtonShape uint8
+
+const (
+	ShapeRectangle ButtonShape = 0
+	ShapeCircle    ButtonShape = 1
+)
+
+// Button repräsentiert einen Button (Kreis oder Rechteck)
 type Button struct {
 	X      int16
 	Y      int16
@@ -19,6 +27,7 @@ type Button struct {
 	Height int16
 	Color  color.RGBA
 	ID     int
+	Shape  ButtonShape // ShapeRectangle oder ShapeCircle
 }
 
 // Contains prüft ob ein Punkt innerhalb des Buttons liegt
@@ -27,9 +36,30 @@ func (b *Button) Contains(x, y int16) bool {
 		y >= b.Y && y < (b.Y+b.Height)
 }
 
-// DrawButton zeichnet einen Button
+// DrawButton zeichnet einen Button (als Kreis oder Rechteck je nach Shape)
 func (b *Button) DrawButton(disp *display.Device) {
-	disp.FillRectangle(b.X, b.Y, b.Width, b.Height, b.Color)
+	if b.Shape == ShapeCircle {
+		// Zeichne als Kreis
+		centerX := b.X + b.Width/2
+		centerY := b.Y + b.Height/2
+		radius := b.Width / 2 // Nimm die kleinere Dimension als Radius
+		DrawFilledCircle(disp, centerX, centerY, radius, b.Color)
+	} else {
+		// Zeichne als Rechteck (Standard)
+		disp.FillRectangle(b.X, b.Y, b.Width, b.Height, b.Color)
+	}
+}
+
+// Flash zeichnet den Button kurz in einer anderen Farbe (für Feedback)
+func (b *Button) Flash(disp *display.Device, flashColor color.RGBA) {
+	if b.Shape == ShapeCircle {
+		centerX := b.X + b.Width/2
+		centerY := b.Y + b.Height/2
+		radius := b.Width / 2
+		DrawFilledCircle(disp, centerX, centerY, radius, flashColor)
+	} else {
+		disp.FillRectangle(b.X, b.Y, b.Width, b.Height, flashColor)
+	}
 }
 
 // Farben
@@ -43,6 +73,19 @@ var (
 	ColorCounter    = color.RGBA{R: 0, G: 255, B: 255, A: 255}   // Cyan
 	ColorFlash      = color.RGBA{R: 255, G: 255, B: 255, A: 255} // Weiß
 )
+
+// DrawFilledCircle zeichnet einen gefüllten Kreis
+func DrawFilledCircle(disp *display.Device, centerX, centerY, radius int16, c color.RGBA) {
+	// Midpoint Circle Algorithm - zeichne gefüllten Kreis
+	for y := -radius; y <= radius; y++ {
+		for x := -radius; x <= radius; x++ {
+			// Prüfe ob Punkt im Kreis liegt
+			if x*x+y*y <= radius*radius {
+				disp.SetPixel(centerX+x, centerY+y, c)
+			}
+		}
+	}
+}
 
 // DrawNumber zeichnet eine Zahl (Hilfsfunktion für alle Menüs)
 func DrawNumber(disp *display.Device, num int, x, y int16) {

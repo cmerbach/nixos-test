@@ -31,6 +31,7 @@ func NewSubMenu4(mainMenu *MainMenu) *SubMenu4 {
 			Height: buttonSize,
 			Color:  ColorBack,
 			ID:     0,
+			Shape:  ShapeCircle,
 		},
 		counterButton: Button{
 			X:      startX + buttonSize + gap,
@@ -39,6 +40,7 @@ func NewSubMenu4(mainMenu *MainMenu) *SubMenu4 {
 			Height: buttonSize,
 			Color:  ColorCounter,
 			ID:     1,
+			Shape:  ShapeCircle,
 		},
 	}
 }
@@ -55,7 +57,7 @@ func (s *SubMenu4) Draw(disp *display.Device) {
 func (s *SubMenu4) HandleTouch(disp *display.Device, touch *display.CST816, x, y int16) Screen {
 	if s.backButton.Contains(x, y) {
 		println("SubMenu4: Back button pressed")
-		disp.FillRectangle(s.backButton.X, s.backButton.Y, s.backButton.Width, s.backButton.Height, ColorFlash)
+		s.backButton.Flash(disp, ColorFlash)
 		time.Sleep(100 * time.Millisecond)
 		return s.mainMenu
 	}
@@ -64,7 +66,7 @@ func (s *SubMenu4) HandleTouch(disp *display.Device, touch *display.CST816, x, y
 		s.counter++
 		print("SubMenu4: Counter = ")
 		println(s.counter)
-		disp.FillRectangle(s.counterButton.X, s.counterButton.Y, s.counterButton.Width, s.counterButton.Height, ColorFlash)
+		s.counterButton.Flash(disp, ColorFlash)
 		time.Sleep(100 * time.Millisecond)
 		s.counterButton.DrawButton(disp)
 		s.drawCounter(disp)
