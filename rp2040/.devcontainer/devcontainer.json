@@ -1,0 +1,46 @@
+{
+  "name": "TinyGo RP2040 Development",
+  "image": "tinygo/tinygo:latest",
+  
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "golang.go",
+        "tinygo.vscode-tinygo",
+        "ms-vscode.cpptools"
+      ],
+      "settings": {
+        "go.toolsManagement.autoUpdate": true,
+        "go.useLanguageServer": true,
+        "go.gopath": "/go"
+      }
+    }
+  },
+
+  "mounts": [
+    "source=/dev,target=/dev,type=bind"
+  ],
+
+  "runArgs": [
+    "--privileged",
+    "--device=/dev/bus/usb"
+  ],
+
+  "postCreateCommand": {
+    "install-tools": "go install golang.org/x/tools/gopls@latest",
+    "install-goimports": "go install golang.org/x/tools/cmd/goimports@latest",
+    "install-drivers": "go get tinygo.org/x/drivers",
+    "install-tinydraw": "go get tinygo.org/x/tinydraw",
+    "install-tinyfont": "go get tinygo.org/x/tinyfont"
+  },
+
+  "remoteEnv": {
+    "PATH": "${containerEnv:PATH}:/go/bin"
+  },
+
+  "remoteUser": "root",
+  
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  }
+}
