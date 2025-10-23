@@ -54,29 +54,70 @@ func main() {
 	println("Menu system ready!")
 
 	lastTouched := false
+	var touchStartX, touchStartY int16
+	var touchEndX, touchEndY int16
+	touchHappened := false
 
 	for {
 		// Touch Status lesen
 		touched, touchData := touch.ReadTouch()
 
-		// Touch Event nur bei steigender Flanke
-		if touched && !lastTouched {
-			x := int16(touchData.X)
-			y := int16(touchData.Y)
+		if touched {
+			// Während Touch aktiv ist, speichere die Position
+			touchEndX = int16(touchData.X)
+			touchEndY = int16(touchData.Y)
 
-			print("Touch at X:")
-			print(x)
-			print(" Y:")
-			println(y)
+			if !lastTouched {
+				// Touch gerade gestartet
+				touchStartX = touchEndX
+				touchStartY = touchEndY
+				touchHappened = false
 
-			// Sende Touch-Event an aktuellen Screen
-			// Screen gibt zurück, welcher Screen als nächstes angezeigt werden soll
-			nextScreen := currentScreen.HandleTouch(&disp, touch, x, y)
+				print("Touch START: X=")
+				print(touchStartX)
+				print(" Y=")
+				println(touchStartY)
+			}
+		}
 
-			// Wenn sich der Screen geändert hat, zeichne den neuen Screen
-			if nextScreen != currentScreen {
-				currentScreen = nextScreen
-				currentScreen.Draw(&disp)
+		// Touch beendet - jetzt auswerten
+		if !touched && lastTouched && !touchHappened {
+			touchHappened = true
+
+			print("Touch END: X=")
+			print(touchEndX)
+			print(" Y=")
+			println(touchEndY)
+
+			// Berechne Delta
+			deltaX := touchEndX - touchStartX
+			deltaY := touchEndY - touchStartY
+
+			print("Delta: X=")
+			print(deltaX)
+			print(" Y=")
+			println(deltaY)
+
+			// Prüfe auf Swipe (mindestens 60 Pixel horizontal)
+			if deltaX > 60 {
+				println(">>> SWIPE LEFT-TO-RIGHT DETECTED! <<<")
+				// Swipe erkannt - sende Signal an Screen
+				nextScreen := currentScreen.HandleTouch(&disp, touch, -1, -1)
+				if nextScreen != currentScreen {
+					currentScreen = nextScreen
+					currentScreen.Draw(&disp)
+				}
+			} else if deltaX < -60 {
+				println(">>> SWIPE RIGHT-TO-LEFT DETECTED! <<<")
+				// Ignorieren oder andere Aktion
+			} else {
+				// Normaler Touch/Tap
+				println("Normal tap detected")
+				nextScreen := currentScreen.HandleTouch(&disp, touch, touchStartX, touchStartY)
+				if nextScreen != currentScreen {
+					currentScreen = nextScreen
+					currentScreen.Draw(&disp)
+				}
 			}
 		}
 

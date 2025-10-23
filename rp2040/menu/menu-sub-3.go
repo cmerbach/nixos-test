@@ -55,6 +55,12 @@ func (s *SubMenu3) Draw(disp *display.Device) {
 
 // HandleTouch verarbeitet Touch-Events
 func (s *SubMenu3) HandleTouch(disp *display.Device, touch *display.CST816, x, y int16) Screen {
+	// Swipe von links nach rechts erkannt?
+	if x == -1 && y == -1 {
+		println("SubMenu3: Swipe detected - returning to main menu")
+		return s.mainMenu
+	}
+
 	if s.backButton.Contains(x, y) {
 		println("SubMenu3: Back button pressed")
 		s.backButton.Flash(disp, ColorFlash)

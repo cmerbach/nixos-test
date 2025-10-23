@@ -35,7 +35,7 @@ func NewSubMenu1(mainMenu *MainMenu) *SubMenu1 {
 			Height: buttonSize,
 			Color:  ColorBack,
 			ID:     0,
-			Shape:  ShapeRectangle,
+			Shape:  ShapeCircle,
 		},
 		// Rechter Button: Counter
 		counterButton: Button{
@@ -65,15 +65,17 @@ func (s *SubMenu1) Draw(disp *display.Device) {
 
 // HandleTouch verarbeitet Touch-Events
 func (s *SubMenu1) HandleTouch(disp *display.Device, touch *display.CST816, x, y int16) Screen {
+	// Swipe von links nach rechts erkannt? (Signal: x=-1, y=-1)
+	if x == -1 && y == -1 {
+		println("SubMenu1: Swipe detected - returning to main menu")
+		return s.mainMenu
+	}
+
 	// Zurück-Button gedrückt?
 	if s.backButton.Contains(x, y) {
 		println("SubMenu1: Back button pressed")
-
-		// Flash-Effekt
 		s.backButton.Flash(disp, ColorFlash)
 		time.Sleep(100 * time.Millisecond)
-
-		// Zurück zum Hauptmenü
 		return s.mainMenu
 	}
 
@@ -82,13 +84,9 @@ func (s *SubMenu1) HandleTouch(disp *display.Device, touch *display.CST816, x, y
 		s.counter++
 		print("SubMenu1: Counter = ")
 		println(s.counter)
-
-		// Flash-Effekt
 		s.counterButton.Flash(disp, ColorFlash)
 		time.Sleep(100 * time.Millisecond)
 		s.counterButton.DrawButton(disp)
-
-		// Counter neu zeichnen
 		s.drawCounter(disp)
 	}
 

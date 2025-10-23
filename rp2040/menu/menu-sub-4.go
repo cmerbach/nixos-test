@@ -1,86 +1,45 @@
 package menu
 
 import (
+	"image/color"
 	"rp2040/display"
-	"time"
 )
 
-// SubMenu4 repräsentiert Untermenü 4
+// SubMenu4 repräsentiert Untermenü 4 - nur Swipe, keine Buttons
 type SubMenu4 struct {
-	mainMenu      *MainMenu
-	counter       int
-	backButton    Button
-	counterButton Button
+	mainMenu *MainMenu
 }
 
 // NewSubMenu4 erstellt Untermenü 4
 func NewSubMenu4(mainMenu *MainMenu) *SubMenu4 {
-	centerY := int16(120)
-	buttonSize := int16(80)
-	gap := int16(10)
-	startX := int16(120 - buttonSize - gap/2)
-	buttonY := centerY - buttonSize/2
-
 	return &SubMenu4{
 		mainMenu: mainMenu,
-		counter:  0,
-		backButton: Button{
-			X:      startX,
-			Y:      buttonY,
-			Width:  buttonSize,
-			Height: buttonSize,
-			Color:  ColorBack,
-			ID:     0,
-			Shape:  ShapeCircle,
-		},
-		counterButton: Button{
-			X:      startX + buttonSize + gap,
-			Y:      buttonY,
-			Width:  buttonSize,
-			Height: buttonSize,
-			Color:  ColorCounter,
-			ID:     1,
-			Shape:  ShapeCircle,
-		},
 	}
 }
 
-// Draw zeichnet Untermenü 4
+// Draw zeichnet Untermenü 4 - leerer Screen mit Text-Hinweis
 func (s *SubMenu4) Draw(disp *display.Device) {
 	disp.FillScreen(ColorBackground)
-	s.backButton.DrawButton(disp)
-	s.counterButton.DrawButton(disp)
-	s.drawCounter(disp)
+
+	// Zeichne einen gelben Streifen in der Mitte
+	yellowColor := color.RGBA{R: 255, G: 255, B: 0, A: 255}
+	disp.FillRectangle(20, 110, 200, 20, yellowColor)
 }
 
 // HandleTouch verarbeitet Touch-Events
 func (s *SubMenu4) HandleTouch(disp *display.Device, touch *display.CST816, x, y int16) Screen {
-	if s.backButton.Contains(x, y) {
-		println("SubMenu4: Back button pressed")
-		s.backButton.Flash(disp, ColorFlash)
-		time.Sleep(100 * time.Millisecond)
+	// Swipe von links nach rechts erkannt?
+	if x == -1 && y == -1 {
+		println("SubMenu4: SWIPE DETECTED - returning to main menu!")
 		return s.mainMenu
 	}
 
-	if s.counterButton.Contains(x, y) {
-		s.counter++
-		print("SubMenu4: Counter = ")
-		println(s.counter)
-		s.counterButton.Flash(disp, ColorFlash)
-		time.Sleep(100 * time.Millisecond)
-		s.counterButton.DrawButton(disp)
-		s.drawCounter(disp)
-	}
+	// Alle anderen Touches ignorieren
+	print("SubMenu4: Touch at X:")
+	print(x)
+	print(" Y:")
+	print(y)
+	println(" (ignored - swipe to go back)")
 
 	return s
-}
-
-// drawCounter zeichnet den Counter
-func (s *SubMenu4) drawCounter(disp *display.Device) {
-	counterX := s.counterButton.X
-	counterY := s.counterButton.Y - 40
-	counterW := s.counterButton.Width
-	counterH := int16(30)
-	disp.FillRectangle(counterX, counterY, counterW, counterH, ColorBackground)
-	DrawNumber(disp, s.counter, counterX+10, counterY+5)
 }

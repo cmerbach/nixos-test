@@ -11,6 +11,74 @@ type Screen interface {
 	HandleTouch(disp *display.Device, touch *display.CST816, x, y int16) Screen
 }
 
+// SwipeDetector erkennt Swipe-Gesten
+type SwipeDetector struct {
+	startX      int16
+	startY      int16
+	hasStart    bool
+	minDistance int16 // Mindestdistanz für einen Swipe
+}
+
+// NewSwipeDetector erstellt einen neuen SwipeDetector
+func NewSwipeDetector() *SwipeDetector {
+	return &SwipeDetector{
+		minDistance: 60, // Mindestens 60 Pixel Swipe
+		hasStart:    false,
+	}
+}
+
+// OnTouchStart wird aufgerufen wenn Touch beginnt
+func (s *SwipeDetector) OnTouchStart(x, y int16) {
+	s.startX = x
+	s.startY = y
+	s.hasStart = true
+}
+
+// OnTouchEnd wird aufgerufen wenn Touch endet und gibt zurück ob ein Swipe erkannt wurde
+// Returns: (isLeftToRight, isRightToLeft, isSwipe)
+func (s *SwipeDetector) OnTouchEnd(endX, endY int16) (bool, bool, bool) {
+	if !s.hasStart {
+		return false, false, false
+	}
+
+	deltaX := endX - s.startX
+	deltaY := endY - s.startY
+
+	// Prüfe ob Bewegung horizontal genug ist (deltaX größer als deltaY)
+	if deltaX < 0 {
+		deltaX = -deltaX
+	}
+	if deltaY < 0 {
+		deltaY = -deltaY
+	}
+
+	// Horizontale Bewegung muss dominieren
+	if deltaX < deltaY {
+		s.hasStart = false
+		return false, false, false
+	}
+
+	// Prüfe Swipe-Richtung
+	actualDeltaX := endX - s.startX
+
+	s.hasStart = false
+
+	if actualDeltaX > s.minDistance {
+		// Links nach Rechts
+		return true, false, true
+	} else if actualDeltaX < -s.minDistance {
+		// Rechts nach Links
+		return false, true, true
+	}
+
+	return false, false, false
+}
+
+// Reset setzt den Detector zurück
+func (s *SwipeDetector) Reset() {
+	s.hasStart = false
+}
+
 // ButtonShape definiert die Form des Buttons
 type ButtonShape uint8
 
