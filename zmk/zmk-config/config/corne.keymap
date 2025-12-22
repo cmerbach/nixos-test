@@ -28,8 +28,8 @@
         base {
             bindings = <
 &kp ESC         &kp Y  &kp Z  &kp U             &kp A    &kp Q        &kp P      &kp B  &kp M         &kp L    &kp F  &kp BSPC
-&kp TAB         &kp C  &kp S  &kp I             &kp E    &kp O        &kp D      &kp T  &kp N         &kp R    &kp H  &kp J
-&kp LEFT_SHIFT  &kp V  &kp X  &kp LBKT          &kp SQT  &kp SEMI     &kp W      &kp G  &kp COMMA     &kp DOT  &kp K  &kp MINUS
+&kp LEFT_SHIFT  &kp C  &kp S  &kp I             &kp E    &kp O        &kp D      &kp T  &kp N         &kp R    &kp H  &kp J
+&kp TAB         &kp V  &kp X  &kp LBKT          &kp SQT  &kp SEMI     &kp W      &kp G  &kp COMMA     &kp DOT  &kp K  &kp MINUS
                               &kp LEFT_CONTROL  &mo 1    &kp SPACE    &kp ENTER  &mo 2  &kp LEFT_ALT
             >;
         };
