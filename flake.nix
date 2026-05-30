@@ -3,11 +3,11 @@
     
 
     inputs = {
-        nixpkgs.url = "github:nixos/nixpkgs/release-25.05";
+        nixpkgs.url = "github:nixos/nixpkgs/release-26.05";
         nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
         disko.url = "github:nix-community/disko";
         home-manager = {
-            url = "github:nix-community/home-manager/release-25.05";
+            url = "github:nix-community/home-manager/release-26.05";
             inputs.nixpkgs.follows = "nixpkgs";
         };
     };
@@ -38,7 +38,7 @@
                 {
                     networking.hostName = hostname;
                     environment.etc."nixos/flake.nix".source = "/home/user/nixos/flake.nix";
-                    system.stateVersion = "25.05";
+                    system.stateVersion = "26.05";
                 }
                 ./hosts/${hostname}/hardware-configuration.nix # created on the fly if necessary
                 ./modules/disko.nix
