@@ -11,14 +11,19 @@
     # boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_5;
     # kernelModules = [ "v4l2loopback" ]; # -> not working on the 30.05.25
     # extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ]; # -> not working on the 30.05.25
+    initrd.availableKernelModules = [
+      "usbhid"
+      "hid_generic"
+      "xhci_pci"
+    ];
 
     # binfmt.emulatedSystems = [ "aarch64-linux" ]; # https://github.com/plmercereau/nixos-pi-zero-2
 
     # enable dmesg logging
     kernelParams = [ 
-      "loglevel=7" 
+      "loglevel=7"
       "console=ttyS0,115200n8" # Serielle Console for debugging
-      "console=tty0" # important! on the last position - VGA-Console as PRIMARY (letzte = primär)
+      "console=tty0"# important! on the last position - VGA-Console as PRIMARY (letzte = primär)
     ];
   };
 
