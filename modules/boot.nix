@@ -16,9 +16,9 @@
 
     # enable dmesg logging
     kernelParams = [ 
-      "loglevel=7" 
+      "loglevel=7"
       "console=ttyS0,115200n8" # Serielle Console for debugging
-      "console=tty0" # important! on the last position - VGA-Console as PRIMARY (letzte = primär)
+      "console=tty0"# important! on the last position - VGA-Console as PRIMARY (letzte = primär)
     ];
   };
 
